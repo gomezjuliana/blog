@@ -1,0 +1,32 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "A practice test",
+  "main": "webserver.js",
+  "scripts": {
+    "build": "webpack -- config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run build",
+    "start": "node webserver.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gomezjuliana/blog.git"
+  },
+  "keywords": [
+    "blog",
+    "practice"
+  ],
+  "author": "Juliana Gomez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gomezjuliana/blog/issues"
+  },
+  "homepage": "https://github.com/gomezjuliana/blog#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "webpack": "^3.2.0"
+  }
+}
