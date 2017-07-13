@@ -12,28 +12,31 @@ function printInfo(data){
 	console.log(data);
 	let rootDiv = document.querySelector('.root');
 	//username
-	let usernameP = document.createElement('p');
-	let usernameText = document.createTextNode(data[0].owner.login);
-	usernameP.appendChild(usernameText);
-	rootDiv.appendChild(usernameP);
-	//title
-	let titleP = document.createElement('p');
-	let titleKey = Object.keys(data[0].files)[0];
-	let titleText = document.createTextNode(titleKey);
-	titleP.appendChild(titleText);
-	rootDiv.appendChild(titleP);
-	//blurb
-	fetch(data[0].files[titleKey].raw_url)
-	.then(response => response.text())
-	.then(blurb)
-	.catch(()=> console.log('Whoops'));
+	for (let x = 0; x<=10; x++){
+		let usernameP = document.createElement('p');
+		let usernameText = document.createTextNode(data[x].owner.login);
+		usernameP.appendChild(usernameText);
+		rootDiv.appendChild(usernameP);
+		//title
+		let titleP = document.createElement('p');
+		let titleKey = Object.keys(data[x].files)[0];
+		let titleText = document.createTextNode(titleKey);
+		titleP.appendChild(titleText);
+		rootDiv.appendChild(titleP);
+		//blurb
+		fetch(data[x].files[titleKey].raw_url)
+		.then(response => response.text())
+		.then(blurb)
+		.catch(()=> console.log('Whoops'));
+	}
 }
 
 function blurb(data){
 	console.log(data);
 	let p = document.createElement('p');
 	p.classList.add('make-this-pretty')
-	let blurb = document.createTextNode(data);
+	let blurbText = data.slice(0, 101);
+	let blurb = document.createTextNode(blurbText +'...');
 	p.appendChild(blurb);
 	document.querySelector('.root').appendChild(p);
 
