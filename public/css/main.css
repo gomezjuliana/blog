@@ -1,0 +1,9 @@
+@import url(https://fonts.googleapis.com/css?family=Crimson+Text|Montserrat:400,600);* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+/*Colors*/
+/*Fonts*/
+.gist-container__blurb-text {
+  white-space: pre; }

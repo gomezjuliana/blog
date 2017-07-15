@@ -1,47 +1,92 @@
-document.querySelector('.search-btn').addEventListener('click', getInfo);
+import '../scss/app.scss';
 
-function getInfo(){
-	let username = document.getElementById('username').value;
+document.querySelector('.form__button').addEventListener('click', getData);
+
+function getData(){
+	if (document.querySelector('.gist-container') || document.querySelector('.gist-container--expanded')){
+		document.querySelectorAll('.gist-container').forEach(function(){
+			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
+
+		})
+		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
+	}
+	let username = document.getElementById('form__username').value;
 	fetch('https://api.github.com/users/'+username+'/gists')
 	.then(response => response.json())
-	.then(printInfo)
-	.catch(()=> console.log('Oops!'))
+	.then(getBlurbInfo)
+	.catch(console.log) 
 };
 
-function printInfo(data){
-	console.log(data);
-	let rootDiv = document.querySelector('.root');
-	//username
-	for (let x = 0; x<=10; x++){
-		let usernameP = document.createElement('p');
-		let usernameText = document.createTextNode(data[x].owner.login);
-		usernameP.appendChild(usernameText);
-		rootDiv.appendChild(usernameP);
-		//title
-		let titleP = document.createElement('p');
-		let titleKey = Object.keys(data[x].files)[0];
-		let titleText = document.createTextNode(titleKey);
-		titleP.appendChild(titleText);
-		rootDiv.appendChild(titleP);
-		//blurb
-		fetch(data[x].files[titleKey].raw_url)
+function getBlurbInfo(data){
+	const min = Math.min(data.length, 10);
+	for (let x = 0; x<min; x++){
+	let titleKey = Object.keys(data[x].files)[0];
+	fetch(data[x].files[titleKey].raw_url)
 		.then(response => response.text())
-		.then(blurb)
-		.catch(()=> console.log('Whoops'));
-	}
+		.then((blurbInfo) => printInfo(blurbInfo, data[x]))
+		.catch(console.log);
+	}	
 }
 
-function blurb(data){
-	console.log(data);
-	let p = document.createElement('p');
-	p.classList.add('make-this-pretty')
-	let blurbText = data.slice(0, 101);
-	let blurb = document.createTextNode(blurbText +'...');
+function printInfo(blurbInfo, data){
+	//create a div for each gist
+	const gistDiv = document.createElement('div');
+	gistDiv.classList.add('gist-container');
+	document.querySelector('.results').appendChild(gistDiv);
+
+	//title
+	const titleP = document.createElement('p');
+	titleP.classList.add('gist-container__title')
+	let titleKey = Object.keys(data.files)[0];
+	const titleText = document.createTextNode(titleKey);
+	titleP.appendChild(titleText);
+	gistDiv.appendChild(titleP);
+
+	//blurb
+	const blurbDiv = document.createElement('div');
+	blurbDiv.classList.add('gist-container__blurb');
+	const p = document.createElement('p');
+	p.classList.add('gist-container__blurb-text')
+	const blurbText = blurbInfo.slice(0, 101);
+	const blurb = document.createTextNode(blurbText +'...');
 	p.appendChild(blurb);
-	document.querySelector('.root').appendChild(p);
+	blurbDiv.appendChild(p);
+	gistDiv.appendChild(blurbDiv);
+
+	//create a button
+	let button = document.createElement('button');
+	button.classList.add('gist-container__button');
+	button.classList.add('btn');
+	let buttonText = document.createTextNode('See more');
+	button.appendChild(buttonText);
+	gistDiv.appendChild(button);
+	button.addEventListener('click', (e) => openModule(e, blurbInfo, data));
+}
+
+function openModule(e, blurbInfo, data){
+	if (document.querySelector('.gist-container')){
+		document.querySelectorAll('.gist-container').forEach(function(){
+			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
+		})
+	}
+	const blurbExpand = document.createElement('div');
+	blurbExpand.classList.add('gist-container--expanded');
+
+	const blurbP = document.createElement('p');
+	blurbP.classList.add('gist-container__blurb--expanded');
+	const blurbTextExpanded = document.createTextNode(blurbInfo);
+	blurbP.appendChild(blurbTextExpanded);
 
 	let button = document.createElement('button');
-	buttonText = document.createTextNode('See more');
+	button.classList.add('gist-container__button');
+	button.classList.add('btn');
+	let buttonText = document.createTextNode('Back');
 	button.appendChild(buttonText);
-	document.querySelector('.root').appendChild(button);
+
+	blurbExpand.appendChild(blurbP);
+	blurbExpand.appendChild(button);
+
+	document.querySelector('.results').appendChild(blurbExpand);
+
+	button.addEventListener('click', getData);
 }

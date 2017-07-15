@@ -65,54 +65,115 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-document.querySelector('.search-btn').addEventListener('click', getInfo);
+"use strict";
 
-function getInfo(){
-	let username = document.getElementById('username').value;
-	fetch('https://api.github.com/users/'+username+'/gists')
-	.then(response => response.json())
-	.then(printInfo)
-	.catch(()=> console.log('Oops!'))
+
+__webpack_require__(1);
+
+document.querySelector('.form__button').addEventListener('click', getData);
+
+function getData() {
+	if (document.querySelector('.gist-container') || document.querySelector('.gist-container--expanded')) {
+		document.querySelectorAll('.gist-container').forEach(function () {
+			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
+		});
+		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
+	}
+	var username = document.getElementById('form__username').value;
+	fetch('https://api.github.com/users/' + username + '/gists').then(function (response) {
+		return response.json();
+	}).then(getBlurbInfo).catch(console.log);
 };
 
-function printInfo(data){
-	console.log(data);
-	let rootDiv = document.querySelector('.root');
-	//username
-	for (let x = 0; x<=10; x++){
-		let usernameP = document.createElement('p');
-		let usernameText = document.createTextNode(data[x].owner.login);
-		usernameP.appendChild(usernameText);
-		rootDiv.appendChild(usernameP);
-		//title
-		let titleP = document.createElement('p');
-		let titleKey = Object.keys(data[x].files)[0];
-		let titleText = document.createTextNode(titleKey);
-		titleP.appendChild(titleText);
-		rootDiv.appendChild(titleP);
-		//blurb
-		fetch(data[x].files[titleKey].raw_url)
-		.then(response => response.text())
-		.then(function blurb(data){
-			console.log(data);
-			let p = document.createElement('p');
-			p.classList.add('make-this-pretty')
-			let blurbText = data.slice(0, 101);
-			let blurb = document.createTextNode(blurbText +'...');
-			p.appendChild(blurb);
-			document.querySelector('.root').appendChild(p);
+function getBlurbInfo(data) {
+	var min = Math.min(data.length, 10);
 
-			let button = document.createElement('button');
-			buttonText = document.createTextNode('See more');
-			button.appendChild(buttonText);
-			document.querySelector('.root').appendChild(button);
-		})
-		.catch(()=> console.log('Whoops'));
+	var _loop = function _loop(x) {
+		var titleKey = Object.keys(data[x].files)[0];
+		fetch(data[x].files[titleKey].raw_url).then(function (response) {
+			return response.text();
+		}).then(function (blurbInfo) {
+			return printInfo(blurbInfo, data[x]);
+		}).catch(console.log);
+	};
+
+	for (var x = 0; x < min; x++) {
+		_loop(x);
 	}
 }
 
+function printInfo(blurbInfo, data) {
+	//create a div for each gist
+	var gistDiv = document.createElement('div');
+	gistDiv.classList.add('gist-container');
+	document.querySelector('.results').appendChild(gistDiv);
+
+	//title
+	var titleP = document.createElement('p');
+	titleP.classList.add('gist-container__title');
+	var titleKey = Object.keys(data.files)[0];
+	var titleText = document.createTextNode(titleKey);
+	titleP.appendChild(titleText);
+	gistDiv.appendChild(titleP);
+
+	//blurb
+	var blurbDiv = document.createElement('div');
+	blurbDiv.classList.add('gist-container__blurb');
+	var p = document.createElement('p');
+	p.classList.add('gist-container__blurb-text');
+	var blurbText = blurbInfo.slice(0, 101);
+	var blurb = document.createTextNode(blurbText + '...');
+	p.appendChild(blurb);
+	blurbDiv.appendChild(p);
+	gistDiv.appendChild(blurbDiv);
+
+	//create a button
+	var button = document.createElement('button');
+	button.classList.add('gist-container__button');
+	button.classList.add('btn');
+	var buttonText = document.createTextNode('See more');
+	button.appendChild(buttonText);
+	gistDiv.appendChild(button);
+	button.addEventListener('click', function (e) {
+		return openModule(e, blurbInfo, data);
+	});
+}
+
+function openModule(e, blurbInfo, data) {
+	if (document.querySelector('.gist-container')) {
+		document.querySelectorAll('.gist-container').forEach(function () {
+			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
+		});
+	}
+	var blurbExpand = document.createElement('div');
+	blurbExpand.classList.add('gist-container--expanded');
+
+	var blurbP = document.createElement('p');
+	blurbP.classList.add('gist-container__blurb--expanded');
+	var blurbTextExpanded = document.createTextNode(blurbInfo);
+	blurbP.appendChild(blurbTextExpanded);
+
+	var button = document.createElement('button');
+	button.classList.add('gist-container__button');
+	button.classList.add('btn');
+	var buttonText = document.createTextNode('Back');
+	button.appendChild(buttonText);
+
+	blurbExpand.appendChild(blurbP);
+	blurbExpand.appendChild(button);
+
+	document.querySelector('.results').appendChild(blurbExpand);
+
+	button.addEventListener('click', getData);
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
