@@ -72,16 +72,21 @@
 
 __webpack_require__(1);
 
+var globalInfo = void 0;
+var currentGist = void 0;
+
 document.querySelector('.form__button').addEventListener('click', getData);
 document.querySelector('.form').addEventListener('submit', function (e) {
 	e.preventDefault();getData();
 });
 
 function getData() {
-	if (document.querySelector('.gist-container') || document.querySelector('.gist-container--expanded')) {
+	if (document.querySelector('.gist-container')) {
 		document.querySelectorAll('.gist-container').forEach(function () {
 			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
 		});
+	}
+	if (document.querySelector('.gist-container--expanded')) {
 		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
 	}
 	var username = document.querySelector('.form__username').value;
@@ -91,6 +96,7 @@ function getData() {
 };
 
 function getBlurbInfo(data) {
+	globalInfo = data;
 	var min = Math.min(data.length, 10);
 
 	var _loop = function _loop(x) {
@@ -98,7 +104,7 @@ function getBlurbInfo(data) {
 		fetch(data[x].files[titleKey].raw_url).then(function (response) {
 			return response.text();
 		}).then(function (blurbInfo) {
-			return printInfo(blurbInfo, data[x]);
+			currentGist = x;printInfo(blurbInfo, data[x]);
 		}).catch(console.log);
 	};
 
@@ -165,11 +171,25 @@ function openModule(e, blurbInfo, data) {
 	button.appendChild(buttonText);
 
 	blurbExpand.appendChild(blurbP);
-	blurbExpand.appendChild(button);
 
 	document.querySelector('.results').appendChild(blurbExpand);
 
 	button.addEventListener('click', getData);
+
+	var backButton = document.createElement('button');
+	var backButtonText = document.createTextNode('Previous Gist');
+	backButton.appendChild(backButtonText);
+
+	var nextButton = document.createElement('button');
+	var nextButtonText = document.createTextNode('Next Gist');
+	nextButton.appendChild(nextButtonText);
+
+	blurbExpand.appendChild(backButton);
+	blurbExpand.appendChild(button);
+	blurbExpand.appendChild(nextButton);
+
+	console.log(globalInfo);
+	console.log(currentGist);
 }
 
 /***/ }),

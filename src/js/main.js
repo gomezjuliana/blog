@@ -1,14 +1,18 @@
 import '../scss/app.scss';
 
+let globalInfo;
+let currentGist;
+
 document.querySelector('.form__button').addEventListener('click', getData);
 document.querySelector('.form').addEventListener('submit', (e) => {e.preventDefault(); getData();});
 
 function getData(){
-	if (document.querySelector('.gist-container') || document.querySelector('.gist-container--expanded')){
+	if (document.querySelector('.gist-container')){
 		document.querySelectorAll('.gist-container').forEach(function(){
 			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
-
 		})
+	}
+	if (document.querySelector('.gist-container--expanded')){
 		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
 	}
 	const username = document.querySelector('.form__username').value;
@@ -19,12 +23,13 @@ function getData(){
 };
 
 function getBlurbInfo(data){
+	globalInfo = data;
 	const min = Math.min(data.length, 10);
 	for (let x = 0; x<min; x++){
 	let titleKey = Object.keys(data[x].files)[0];
 	fetch(data[x].files[titleKey].raw_url)
 		.then(response => response.text())
-		.then((blurbInfo) => printInfo(blurbInfo, data[x]))
+		.then((blurbInfo) => {currentGist = x; printInfo(blurbInfo, data[x])})
 		.catch(console.log);
 	}	
 }
@@ -85,9 +90,26 @@ function openModule(e, blurbInfo, data){
 	button.appendChild(buttonText);
 
 	blurbExpand.appendChild(blurbP);
-	blurbExpand.appendChild(button);
-
+	
 	document.querySelector('.results').appendChild(blurbExpand);
 
 	button.addEventListener('click', getData);
+
+	const backButton = document.createElement('button');
+	const backButtonText = document.createTextNode('Previous Gist');
+	backButton.appendChild(backButtonText);
+
+	const nextButton = document.createElement('button');
+	const nextButtonText = document.createTextNode('Next Gist');
+	nextButton.appendChild(nextButtonText);
+
+	//backButton.addEventListener('click', )
+	//nextButton.addEventListener('click', )
+
+	blurbExpand.appendChild(backButton);
+	blurbExpand.appendChild(button);
+	blurbExpand.appendChild(nextButton);
+
+	console.log(globalInfo);
+	console.log(currentGist);
 }
