@@ -1,6 +1,7 @@
 import '../scss/app.scss';
 
 document.querySelector('.form__button').addEventListener('click', getData);
+document.querySelector('.form').addEventListener('submit', (e) => {e.preventDefault(); getData();});
 
 function getData(){
 	if (document.querySelector('.gist-container') || document.querySelector('.gist-container--expanded')){
@@ -10,7 +11,7 @@ function getData(){
 		})
 		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
 	}
-	let username = document.getElementById('form__username').value;
+	const username = document.querySelector('.form__username').value;
 	fetch('https://api.github.com/users/'+username+'/gists')
 	.then(response => response.json())
 	.then(getBlurbInfo)

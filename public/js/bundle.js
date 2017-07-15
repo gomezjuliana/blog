@@ -73,6 +73,9 @@
 __webpack_require__(1);
 
 document.querySelector('.form__button').addEventListener('click', getData);
+document.querySelector('.form').addEventListener('submit', function (e) {
+	e.preventDefault();getData();
+});
 
 function getData() {
 	if (document.querySelector('.gist-container') || document.querySelector('.gist-container--expanded')) {
@@ -81,7 +84,7 @@ function getData() {
 		});
 		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
 	}
-	var username = document.getElementById('form__username').value;
+	var username = document.querySelector('.form__username').value;
 	fetch('https://api.github.com/users/' + username + '/gists').then(function (response) {
 		return response.json();
 	}).then(getBlurbInfo).catch(console.log);
