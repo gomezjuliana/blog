@@ -3,6 +3,7 @@
 
 body {
 	background-color: $neutral;
+	color: $carbon;
 }
 .container {
 	margin: 20px;
@@ -13,7 +14,7 @@ body {
 	.search__heading {
 		font-family: $montserrat;
 		margin-bottom: 20px;
-		color: $carbon;
+		font-size: 28px;
 	}
 }
 
@@ -21,7 +22,6 @@ body {
 	.form__username {
 		font-family: $crimson;
 		font-size: 20px;
-		margin-bottom: 20px;
 		padding-left: 5px;
 	}
 }
@@ -29,6 +29,29 @@ body {
 .btn {
 	padding: 5px 15px;
 	font-family: $crimson;
+	margin: 20px 5px;
+}
+
+.gist-container__title {
+	font-family: $montserrat;
+	font-size: 18px;
+	background-color: $sky;
+	padding: 5px;
+	color: $watermelon; 
+}
+
+.gist-container {
+	.gist-container__blurb-text-elipses{
+		color:$watermelon;
+	}
+}
+
+.gist-container__blurb,
+.gist-container__blurb--expanded {
+	margin: 10px;
+	background-color: $whitesmoke;
+	font-family: monospace;
+	padding: 5px;
 }
 
 .gist-container__blurb-text,

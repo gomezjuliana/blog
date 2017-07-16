@@ -26,7 +26,7 @@ function getBlurbInfo(data){
 	globalInfo = data;
 	const min = Math.min(data.length, 10);
 	for (let x = 0; x<min; x++){
-	let titleKey = Object.keys(data[x].files)[0];
+	const titleKey = Object.keys(data[x].files)[0];
 	fetch(data[x].files[titleKey].raw_url)
 		.then(response => response.text())
 		.then((blurbInfo) => {currentGist = x; printInfo(blurbInfo, data[x])})
@@ -36,28 +36,34 @@ function getBlurbInfo(data){
 
 function printInfo(blurbInfo, data){
 	//create a div for each gist
-	const gistDiv = document.createElement('div');
-	gistDiv.classList.add('gist-container');
-	document.querySelector('.results').appendChild(gistDiv);
+	const gistContainer = document.createElement('div');
+	gistContainer.classList.add('gist-container');
+	document.querySelector('.results').appendChild(gistContainer);
 
 	//title
-	const titleP = document.createElement('p');
-	titleP.classList.add('gist-container__title')
-	let titleKey = Object.keys(data.files)[0];
-	const titleText = document.createTextNode(titleKey);
-	titleP.appendChild(titleText);
-	gistDiv.appendChild(titleP);
+	let span = document.createElement('span');
+	span.classList.add('gist-container__title')
+	let textNode = document.createTextNode(Object.keys(data.files)[0]);
+	span.appendChild(textNode);
+	gistContainer.appendChild(span);
 
 	//blurb
-	const blurbDiv = document.createElement('div');
-	blurbDiv.classList.add('gist-container__blurb');
+	const blurbContainer = document.createElement('div');
+	blurbContainer.classList.add('gist-container__blurb');
 	const p = document.createElement('p');
 	p.classList.add('gist-container__blurb-text')
-	const blurbText = blurbInfo.slice(0, 101);
-	const blurb = document.createTextNode(blurbText +'...');
+	const blurbContent = blurbInfo.slice(0, 101);
+	const blurb = document.createTextNode(blurbContent);
+
+	const elipsesSpan = document.createElement('span');
+	elipsesSpan.classList.add('gist-container__blurb-text-elipses');
+	const elipses = document.createTextNode('...');
+
+	elipsesSpan.appendChild(elipses);
 	p.appendChild(blurb);
-	blurbDiv.appendChild(p);
-	gistDiv.appendChild(blurbDiv);
+	p.appendChild(elipsesSpan);
+	blurbContainer.appendChild(p);
+	gistContainer.appendChild(blurbContainer);
 
 	//create a button
 	let button = document.createElement('button');
@@ -65,7 +71,7 @@ function printInfo(blurbInfo, data){
 	button.classList.add('btn');
 	let buttonText = document.createTextNode('See more');
 	button.appendChild(buttonText);
-	gistDiv.appendChild(button);
+	gistContainer.appendChild(button);
 	button.addEventListener('click', (e) => openModule(e, blurbInfo, data));
 }
 
@@ -75,8 +81,21 @@ function openModule(e, blurbInfo, data){
 			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
 		})
 	}
+	if (document.querySelector('.gist-container--expanded')){
+		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
+	}
 	const blurbExpand = document.createElement('div');
 	blurbExpand.classList.add('gist-container--expanded');
+
+	let titleP = document.createElement('span');
+	titleP.classList.add('gist-container__title')
+	let titleKey = Object.keys(data.files)[0];
+	let titleText = document.createTextNode(titleKey);
+	titleP.appendChild(titleText);
+	blurbExpand.appendChild(titleP);
+
+	let div = document.createElement('div');
+	div.classList.add('gist-container__blurb');
 
 	const blurbP = document.createElement('p');
 	blurbP.classList.add('gist-container__blurb--expanded');
@@ -97,19 +116,20 @@ function openModule(e, blurbInfo, data){
 
 	const backButton = document.createElement('button');
 	const backButtonText = document.createTextNode('Previous Gist');
+	backButton.classList.add('gist-container__back-button');
+	backButton.classList.add('btn');
 	backButton.appendChild(backButtonText);
 
 	const nextButton = document.createElement('button');
 	const nextButtonText = document.createTextNode('Next Gist');
+	nextButton.classList.add('gist-container__next-button');
+	nextButton.classList.add('btn');
 	nextButton.appendChild(nextButtonText);
 
-	//backButton.addEventListener('click', )
-	//nextButton.addEventListener('click', )
+	backButton.addEventListener('click', (e) => openModule(e, blurbInfo, globalInfo[currentGist-1]));
+	nextButton.addEventListener('click', (e) => openModule(e, blurbInfo, globalInfo[currentGist+1]));
 
 	blurbExpand.appendChild(backButton);
 	blurbExpand.appendChild(button);
 	blurbExpand.appendChild(nextButton);
-
-	console.log(globalInfo);
-	console.log(currentGist);
 }

@@ -6,7 +6,8 @@
 /*Colors*/
 /*Fonts*/
 body {
-  background-color: #EFEFEF; }
+  background-color: #EFEFEF;
+  color: #4C4C4C; }
 
 .container {
   margin: 20px; }
@@ -16,17 +17,34 @@ body {
   .search .search__heading {
     font-family: "Montserrat", sans-serif;
     margin-bottom: 20px;
-    color: #4C4C4C; }
+    font-size: 28px; }
 
 .form .form__username {
   font-family: "Crimson Text", serif;
   font-size: 20px;
-  margin-bottom: 20px;
   padding-left: 5px; }
 
 .btn {
   padding: 5px 15px;
-  font-family: "Crimson Text", serif; }
+  font-family: "Crimson Text", serif;
+  margin: 20px 5px; }
+
+.gist-container__title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  background-color: #E3F4F8;
+  padding: 5px;
+  color: #FF3B3F; }
+
+.gist-container .gist-container__blurb-text-elipses {
+  color: #FF3B3F; }
+
+.gist-container__blurb,
+.gist-container__blurb--expanded {
+  margin: 10px;
+  background-color: #F5F5F5;
+  font-family: monospace;
+  padding: 5px; }
 
 .gist-container__blurb-text,
 .gist-container__blurb--expanded {

@@ -115,28 +115,34 @@ function getBlurbInfo(data) {
 
 function printInfo(blurbInfo, data) {
 	//create a div for each gist
-	var gistDiv = document.createElement('div');
-	gistDiv.classList.add('gist-container');
-	document.querySelector('.results').appendChild(gistDiv);
+	var gistContainer = document.createElement('div');
+	gistContainer.classList.add('gist-container');
+	document.querySelector('.results').appendChild(gistContainer);
 
 	//title
-	var titleP = document.createElement('p');
-	titleP.classList.add('gist-container__title');
-	var titleKey = Object.keys(data.files)[0];
-	var titleText = document.createTextNode(titleKey);
-	titleP.appendChild(titleText);
-	gistDiv.appendChild(titleP);
+	var span = document.createElement('span');
+	span.classList.add('gist-container__title');
+	var textNode = document.createTextNode(Object.keys(data.files)[0]);
+	span.appendChild(textNode);
+	gistContainer.appendChild(span);
 
 	//blurb
-	var blurbDiv = document.createElement('div');
-	blurbDiv.classList.add('gist-container__blurb');
+	var blurbContainer = document.createElement('div');
+	blurbContainer.classList.add('gist-container__blurb');
 	var p = document.createElement('p');
 	p.classList.add('gist-container__blurb-text');
-	var blurbText = blurbInfo.slice(0, 101);
-	var blurb = document.createTextNode(blurbText + '...');
+	var blurbContent = blurbInfo.slice(0, 101);
+	var blurb = document.createTextNode(blurbContent);
+
+	var elipsesSpan = document.createElement('span');
+	elipsesSpan.classList.add('gist-container__blurb-text-elipses');
+	var elipses = document.createTextNode('...');
+
+	elipsesSpan.appendChild(elipses);
 	p.appendChild(blurb);
-	blurbDiv.appendChild(p);
-	gistDiv.appendChild(blurbDiv);
+	p.appendChild(elipsesSpan);
+	blurbContainer.appendChild(p);
+	gistContainer.appendChild(blurbContainer);
 
 	//create a button
 	var button = document.createElement('button');
@@ -144,7 +150,7 @@ function printInfo(blurbInfo, data) {
 	button.classList.add('btn');
 	var buttonText = document.createTextNode('See more');
 	button.appendChild(buttonText);
-	gistDiv.appendChild(button);
+	gistContainer.appendChild(button);
 	button.addEventListener('click', function (e) {
 		return openModule(e, blurbInfo, data);
 	});
@@ -156,8 +162,21 @@ function openModule(e, blurbInfo, data) {
 			document.querySelector('.results').removeChild(document.querySelector('.gist-container'));
 		});
 	}
+	if (document.querySelector('.gist-container--expanded')) {
+		document.querySelector('.results').removeChild(document.querySelector('.gist-container--expanded'));
+	}
 	var blurbExpand = document.createElement('div');
 	blurbExpand.classList.add('gist-container--expanded');
+
+	var titleP = document.createElement('span');
+	titleP.classList.add('gist-container__title');
+	var titleKey = Object.keys(data.files)[0];
+	var titleText = document.createTextNode(titleKey);
+	titleP.appendChild(titleText);
+	blurbExpand.appendChild(titleP);
+
+	var div = document.createElement('div');
+	div.classList.add('gist-container__blurb');
 
 	var blurbP = document.createElement('p');
 	blurbP.classList.add('gist-container__blurb--expanded');
@@ -178,18 +197,26 @@ function openModule(e, blurbInfo, data) {
 
 	var backButton = document.createElement('button');
 	var backButtonText = document.createTextNode('Previous Gist');
+	backButton.classList.add('gist-container__back-button');
+	backButton.classList.add('btn');
 	backButton.appendChild(backButtonText);
 
 	var nextButton = document.createElement('button');
 	var nextButtonText = document.createTextNode('Next Gist');
+	nextButton.classList.add('gist-container__next-button');
+	nextButton.classList.add('btn');
 	nextButton.appendChild(nextButtonText);
+
+	backButton.addEventListener('click', function (e) {
+		return openModule(e, blurbInfo, globalInfo[currentGist - 1]);
+	});
+	nextButton.addEventListener('click', function (e) {
+		return openModule(e, blurbInfo, globalInfo[currentGist + 1]);
+	});
 
 	blurbExpand.appendChild(backButton);
 	blurbExpand.appendChild(button);
 	blurbExpand.appendChild(nextButton);
-
-	console.log(globalInfo);
-	console.log(currentGist);
 }
 
 /***/ }),
