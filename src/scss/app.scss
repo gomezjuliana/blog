@@ -13,8 +13,8 @@ body {
 	text-align: center;
 	.search__heading {
 		font-family: $montserrat;
-		margin-bottom: 20px;
 		font-size: 28px;
+		margin-bottom: 20px;
 	}
 }
 
@@ -27,30 +27,29 @@ body {
 }
 
 .btn {
-	padding: 5px 15px;
 	font-family: $crimson;
 	margin: 20px 5px;
+	padding: 5px 15px;
 }
 
 .gist-container__title {
+	background-color: $sky;
+	color: $watermelon; 
 	font-family: $montserrat;
 	font-size: 18px;
-	background-color: $sky;
 	padding: 5px;
-	color: $watermelon; 
 }
 
 .gist-container {
-	.gist-container__blurb-text-elipses{
+	.gist-container__blurb-elipses{
 		color:$watermelon;
 	}
 }
 
-.gist-container__blurb,
-.gist-container__blurb--expanded {
-	margin: 10px;
+.gist-container__blurb {
 	background-color: $whitesmoke;
 	font-family: monospace;
+	margin: 10px;	
 	padding: 5px;
 }
 
