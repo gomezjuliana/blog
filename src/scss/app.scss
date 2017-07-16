@@ -11,7 +11,7 @@ body {
 
 .search {
 	text-align: center;
-	.search__heading {
+	&__heading {
 		font-family: $montserrat;
 		font-size: 28px;
 		margin-bottom: 20px;
@@ -19,7 +19,7 @@ body {
 }
 
 .form {
-	.form__username {
+	&__username {
 		font-family: $crimson;
 		font-size: 20px;
 		padding-left: 5px;
@@ -32,24 +32,24 @@ body {
 	padding: 5px 15px;
 }
 
-.gist-container__title {
-	background-color: $sky;
-	color: $watermelon; 
-	font-family: $montserrat;
-	font-size: 18px;
-	padding: 5px;
-}
 
 .gist-container {
-	.gist-container__blurb-elipses{
+	&__blurb-elipses{
 		color:$watermelon;
 	}
-}
-
-.gist-container__blurb {
+	&__title {
+		background-color: $sky;
+		color: $watermelon; 
+		font-family: $montserrat;
+		font-size: 18px;
+		padding: 5px;
+	}
+	&__blurb {
 	background-color: $whitesmoke;
 	font-family: monospace;
-	margin: 10px;	
+	margin: 10px;
+	overflow-x: scroll;	
 	padding: 5px;
 	white-space: pre;
+	}
 }
