@@ -1,0 +1,55 @@
+@import './base/reset';
+@import './base/variables';
+
+body {
+	background-color: $neutral;
+	color: $carbon;
+}
+.container {
+	margin: 20px;
+}
+
+.search {
+	text-align: center;
+	&__heading {
+		font-family: $montserrat;
+		font-size: 28px;
+		margin-bottom: 20px;
+	}
+}
+
+.form {
+	&__username {
+		font-family: $crimson;
+		font-size: 20px;
+		padding-left: 5px;
+	}
+}
+
+.btn {
+	font-family: $crimson;
+	margin: 20px 5px;
+	padding: 5px 15px;
+}
+
+
+.gist-container {
+	&__blurb-elipses{
+		color:$watermelon;
+	}
+	&__title {
+		background-color: $sky;
+		color: $watermelon; 
+		font-family: $montserrat;
+		font-size: 18px;
+		padding: 5px;
+	}
+	&__blurb {
+	background-color: $whitesmoke;
+	font-family: monospace;
+	margin: 10px;
+	overflow-x: scroll;	
+	padding: 5px;
+	white-space: pre;
+	}
+}

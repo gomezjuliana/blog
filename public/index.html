@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>2000s blog</title>
-	<style type="text/css">
-		.make-this-pretty {
-			white-space: pre;
-		}
-
-	</style>
+	<title>Gist Lookup</title>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
 
 <div class="container">
-	<h2>Who are you looking for?</h2>
-	<form class="form">
-		<input type="text" name="search-bar" placeholder="username" id="username">
-		<button class="btn search-btn" type="button">Search!</button>
-	</form>
-</div>
+	<div class="search">
+		<h2 class="search__heading">Find anyone's Gists!</h2>
+		<form class="form">
+			<input type="text" name="search-bar" placeholder="username" class="form__username">
+			<button class="form__button btn" type="button">Search!</button>
+		</form>
+	</div>
 
-<div class="root">
+	<div class="results"></div>
 </div>
 
 <script type="text/javascript" src="js/bundle.js"></script>
