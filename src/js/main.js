@@ -82,7 +82,7 @@ function printInfo(blurbInfo, data, x){
 
 	/***create the 'See More' button*/
 	createButton('gist-container__button', 'See more', gistContainer, 
-				(e) => openModule(e, blurbInfo, data, x));
+		(e) => openModule(e, blurbInfo, data, x));
 }
 
 /**
@@ -118,14 +118,14 @@ function openModule(e, blurbInfo, data, x){
 
 	//create a button to go to last entry
 	createButton('gist-container__back-button', '<<', expandedBlurbContainer, 
-				(e) => openModule(e, blurbInfoList[previousGistId], globalInfo[previousGistId], previousGistId));
+		(e) => openModule(e, blurbInfoList[previousGistId], globalInfo[previousGistId], previousGistId));
 
 	//create a button to go back to results
 	createButton('gist-container__button', 'Back to results', expandedBlurbContainer, getData);
 
 	//create a button to go to the next entry
 	createButton('gist-container__next-button', '>>', expandedBlurbContainer, 
-				(e) => openModule(e, blurbInfoList[nextGistId], globalInfo[nextGistId], nextGistId));	
+		(e) => openModule(e, blurbInfoList[nextGistId], globalInfo[nextGistId], nextGistId));	
 }
 
 /**
